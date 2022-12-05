@@ -25,8 +25,7 @@ public class UserDetailsX implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsX(String id, String username, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsX(String id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
