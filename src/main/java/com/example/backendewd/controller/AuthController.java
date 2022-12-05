@@ -79,7 +79,6 @@ public class AuthController {
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 encoder.encode(signUpRequest.getPassword()));
@@ -94,22 +93,21 @@ public class AuthController {
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
-                    case "admin":
+                    case "admin" -> {
                         Role adminRole = roleRepository.findByName(AdminUser.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
-                        break;
-
-                    case "mod":
+                    }
+                    case "mod" -> {
                         Role modRole = roleRepository.findByName(AdminUser.ROLE_MODERATOR)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
-                        break;
-
-                    default:
+                    }
+                    default -> {
                         Role userRole = roleRepository.findByName(AdminUser.ROLE_USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
+                    }
                 }
             });
         }
