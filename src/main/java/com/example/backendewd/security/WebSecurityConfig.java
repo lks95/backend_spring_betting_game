@@ -69,6 +69,9 @@ public class WebSecurityConfig {
                 //https://www.section.io/engineering-education/springboot-antmatchers/
 
                 //todo
+
+                //https://stackoverflow.com/questions/35890540/when-to-use-spring-securitys-antmatcher
+
                 //.authorizeHttpRequests().antMatcher("/api/auth/**").permitAll()
                 //.antMatchers("/api/test/**").permitAll()
                 //.anyRequest().authenticated();
