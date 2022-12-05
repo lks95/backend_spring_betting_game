@@ -19,6 +19,8 @@ import com.example.backendewd.response.TokenResponse;
 import com.example.backendewd.security.jwt.JwtUtils;
 import com.example.backendewd.security.services.UserDetailsX;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -58,17 +60,20 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsX userDetails = (UserDetailsX) authentication.getPrincipal();
+
+        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new TokenResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                roles));
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                        .body(new TokenResponse(
+                                userDetails.getId(),
+                                userDetails.getUsername(),
+                                roles));
     }
 
     @PostMapping("/signup")
