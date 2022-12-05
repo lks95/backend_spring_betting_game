@@ -63,13 +63,15 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//.and()
                 //antmatchers for handling diffrent roles (admin, user, moderator)
                 //how to use antmatchers
                 //https://www.section.io/engineering-education/springboot-antmatchers/
-                .authorizeHttpRequests().antMatcher("/api/auth/**").permitAll()
-                .antMatchers("/api/test/**").permitAll()
-                .anyRequest().authenticated();
+
+                //todo
+                //.authorizeHttpRequests().antMatcher("/api/auth/**").permitAll()
+                //.antMatchers("/api/test/**").permitAll()
+                //.anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());
 
