@@ -11,4 +11,5 @@ public interface RoleRepository extends MongoRepository<Role, String> {
     Optional<Role> findByName(AdminUser name);
 
     Boolean existsByUsername(String username);
+
 }
