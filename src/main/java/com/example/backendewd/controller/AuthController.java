@@ -18,6 +18,7 @@ import com.example.backendewd.response.MessageResponse;
 import com.example.backendewd.response.TokenResponse;
 import com.example.backendewd.security.jwt.JwtUtils;
 import com.example.backendewd.security.services.UserDetailsX;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -61,19 +62,20 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        UserDetailsX userDetails = (UserDetailsX) authentication.getPrincipal();
+        String jwt = jwtUtils.generateJwtToken(authentication);
 
-        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+        UserDetailsX userDetails = (UserDetailsX) authentication.getPrincipal();
 
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                        .body(new TokenResponse(
-                                userDetails.getId(),
-                                userDetails.getUsername(),
-                                roles));
+        return ResponseEntity.ok(new TokenResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                roles));
+
+
     }
 
     @PostMapping("/signup")
